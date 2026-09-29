@@ -16,6 +16,7 @@ if not m:
     sys.exit("來源檔裡找不到 </style>，無法切出 <head>")
 head, body = s[: m.end()], s[m.end():]
 
+# data-embed="on"：獨立網頁可以嵌 Instagram；Artifact 會擋外站 iframe，沒有這個屬性時頁面改顯示連結卡
 # 獨立網頁不像 Artifact 外框會替 :root 補安全區留白，拿掉 viewport-fit=cover 讓瀏覽器自己避開瀏海
 head = head.replace(", viewport-fit=cover", "")
 
@@ -27,7 +28,7 @@ if "noindex" not in head:
     )
 
 out = (
-    "<!DOCTYPE html>\n<html lang=\"zh-Hant\">\n<head>\n"
+    "<!DOCTYPE html>\n<html lang=\"zh-Hant\" data-embed=\"on\">\n<head>\n"
     + head.strip()
     + "\n</head>\n<body>\n"
     + body.strip()

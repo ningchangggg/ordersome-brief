@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-embed="on">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -168,6 +168,49 @@
   .sec-sub { margin-top: 8px; color: var(--ink-2); font-size: 15px; max-width: 34em; }
   h3 { margin: 0; font-size: 17px; font-weight: 700; line-height: 1.5; }
   .subhead { margin: 28px 0 0; font-size: 14px; font-weight: 700; color: var(--ink-3); letter-spacing: .04em; }
+
+  /* 範例影片：橫向輪播。GitHub 版（html[data-embed="on"]）嵌 Instagram，Artifact 版擋外站 iframe，改顯示連結卡 */
+  .reels {
+    display: flex; gap: 12px; align-items: flex-start;
+    overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+    margin: 18px calc(var(--gutter) * -1) 0; padding: 2px var(--gutter) 6px;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none; -webkit-overflow-scrolling: touch;
+  }
+  .reels::-webkit-scrollbar { display: none; }
+  .reel { flex: 0 0 min(86%, 326px); margin: 0; scroll-snap-align: start; min-width: 0; }
+  .reel .instagram-media {
+    min-width: 0 !important; width: 100% !important; max-width: 100% !important;
+    margin: 0 !important; border-radius: 14px !important; border: 1px solid var(--rule) !important;
+  }
+  /* Instagram 在背景分頁不會回報高度，給個下限免得縮成一條 */
+  .reel iframe.instagram-media { min-height: 520px; }
+  .reel blockquote.instagram-media { display: grid; place-items: center; min-height: 420px; background: var(--card); padding: 16px; text-align: center; font-size: 14px; }
+  .reel-card {
+    position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 4px;
+    aspect-ratio: 9 / 16; max-width: 100%; padding: 16px;
+    background: var(--ink); color: var(--paper); border-radius: 14px; text-decoration: none;
+  }
+  .reel-card .play {
+    position: absolute; left: 50%; top: 44%; transform: translate(-50%, -50%);
+    width: 64px; height: 64px; border-radius: 50%; background: var(--sign);
+  }
+  .reel-card .play::after {
+    content: ""; position: absolute; left: 26px; top: 20px;
+    border-left: 18px solid var(--on-sign); border-top: 12px solid transparent; border-bottom: 12px solid transparent;
+  }
+  .reel-card b { font-family: var(--latin); font-weight: 700; font-size: 16px; }
+  .reel-card span { font-size: 13px; opacity: .75; }
+  .reel figcaption { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-top: 8px; font-size: 13.5px; }
+  .reel figcaption b { font-family: var(--latin); font-weight: 700; min-width: 0; overflow-wrap: anywhere; }
+  .reel figcaption a { flex: 0 0 auto; color: var(--ink-2); }
+  .reels-ctl { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 10px; }
+  .reels-ctl span { font-family: var(--latin); font-weight: 700; font-size: 13px; color: var(--ink-3); font-variant-numeric: tabular-nums; min-width: 3.2em; text-align: center; }
+  .reels-ctl button {
+    width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+    border: 2px solid var(--ink); background: var(--card); font-size: 18px; font-weight: 700; line-height: 1;
+  }
+  .reels-ctl button:disabled { opacity: .3; cursor: default; }
 
   /* 選篇 */
   .picker { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
@@ -429,6 +472,7 @@
     <button class="ep-pill" id="epPill" type="button" aria-label="切換主題篇"><b id="epPillNo">#1</b><span id="epPillName">台式古早味篇</span></button>
   </div>
   <nav class="navrow" id="navrow" aria-label="章節">
+    <button type="button" data-go="reels">範例</button>
     <button type="button" data-go="pick">主題</button>
     <button type="button" data-go="brand">品牌</button>
     <button type="button" data-go="flow">架構</button>
@@ -461,6 +505,17 @@
 </header>
 
 <main class="wrap">
+
+  <section id="reels" aria-labelledby="h-reels">
+    <h2 id="h-reels">看看其他創作者怎麼拍</h2>
+    <p class="sec-sub">已經合作過的創作者拍的來點什麼。左右滑動切換，點影片就能播放。</p>
+    <div class="reels" id="reelTrack" tabindex="0" role="region" aria-label="創作者範例影片，可左右捲動"></div>
+    <div class="reels-ctl">
+      <button type="button" id="reelPrev" aria-label="上一支">‹</button>
+      <span id="reelPos" aria-live="polite">1 / 5</span>
+      <button type="button" id="reelNext" aria-label="下一支">›</button>
+    </div>
+  </section>
 
   <section id="pick" aria-labelledby="h-pick">
     <h2 id="h-pick"><span class="hl">選一個主題來拍</span></h2>
@@ -756,6 +811,14 @@ var EPISODES = [
   }
 ];
 
+var REELS = [
+  ['huihui613', 'DcyMDQpio44'],
+  ['weijin.01', 'DcGUvy1yj1g'],
+  ['peiyu1213', 'DbqVjTQOTXl'],
+  ['mia_hoc', 'DTK3Hekj0wv'],
+  ['noobee_me', 'Da4Uy5Lvxak']
+];
+
 var DICT_TW = [
   ['堅持用鐵板炒麵', '鍋氣十足／每一條麵都裹滿醬／自家研發蘑菇醬／加荷包蛋是懂吃／從古早味吃到慶尚道辣炒豬'],
   ['粉漿蛋餅', '手工調配粉漿／煎得恰恰／外酥內Q有厚度／手作鮪魚綿密無腥味／起司瀑布看過沒'],
@@ -940,6 +1003,40 @@ function renderChecks(e, ta) {
   count();
 }
 
+function renderReels() {
+  var embed = document.documentElement.getAttribute('data-embed') === 'on';
+  $('reelTrack').innerHTML = REELS.map(function (r) {
+    var url = 'https://www.instagram.com/reel/' + r[1] + '/';
+    var media = embed
+      ? '<blockquote class="instagram-media" data-instgrm-permalink="' + url + '?utm_source=ig_embed" data-instgrm-version="14"><a href="' + url + '" target="_blank" rel="noopener">載入 @' + esc(r[0]) + ' 的影片…</a></blockquote>'
+      : '<a class="reel-card" href="' + url + '" target="_blank" rel="noopener"><i class="play" aria-hidden="true"></i><b>@' + esc(r[0]) + '</b><span>在 Instagram 觀看</span></a>';
+    return '<figure class="reel">' + media + '<figcaption><b>@' + esc(r[0]) + '</b><a href="' + url + '" target="_blank" rel="noopener">Instagram ↗</a></figcaption></figure>';
+  }).join('');
+  if (embed) {
+    var s = document.createElement('script');
+    s.async = true; s.src = 'https://www.instagram.com/embed.js';
+    document.body.appendChild(s);
+  }
+}
+
+function wireReels(reduce) {
+  var track = $('reelTrack');
+  function step() { var f = track.querySelector('.reel'); return f ? f.offsetWidth + 12 : track.clientWidth; }
+  function update() {
+    var i = Math.round(track.scrollLeft / step());
+    var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+    if (atEnd) i = REELS.length - 1;
+    $('reelPos').textContent = Math.min(i + 1, REELS.length) + ' / ' + REELS.length;
+    $('reelPrev').disabled = track.scrollLeft <= 4;
+    $('reelNext').disabled = atEnd;
+  }
+  $('reelPrev').addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }); });
+  $('reelNext').addEventListener('click', function () { track.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }); });
+  track.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
+
 function renderDict() {
   function rows(list) {
     return list.map(function (d) {
@@ -966,6 +1063,7 @@ function wire() {
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   function go(id) { var el = $(id); if (el) el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+  wireReels(reduce);
   $('navrow').addEventListener('click', function (ev) { var b = ev.target.closest('button'); if (b) go(b.dataset.go); });
   $('epPill').addEventListener('click', function () { go('pick'); });
   window.addEventListener('hashchange', function () {
@@ -986,7 +1084,7 @@ function wire() {
     });
   });
 
-  var ids = ['pick', 'brand', 'flow', 'hook', 'slogan', 'taste', 'dict', 'order', 'howto', 'caption', 'rules', 'sheet'];
+  var ids = ['reels', 'pick', 'brand', 'flow', 'hook', 'slogan', 'taste', 'dict', 'order', 'howto', 'caption', 'rules', 'sheet'];
   var navBtns = {};
   document.querySelectorAll('#navrow button').forEach(function (b) { navBtns[b.dataset.go] = b; });
   var ticking = false, last = '';
@@ -1013,6 +1111,7 @@ function wire() {
 }
 
 function boot() {
+  renderReels();
   renderPicker();
   renderDict();
   var m = /^#ep(\d)$/.exec(location.hash || '');

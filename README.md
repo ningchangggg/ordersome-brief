@@ -1,10 +1,10 @@
 # 來點什麼 創作者拍攝指南（手機版）
 
-來點什麼 KOL 拍攝企劃 #1–#5 與創作者合作提案整合成的手機版單頁，照片已內嵌於 HTML，單一檔案即可離線瀏覽。
+來點什麼 KOL 拍攝企劃與創作者合作提案整合成的手機版單頁（台式古早味／減醣飯捲／搖搖便當三個主題），照片已內嵌於 HTML，單一檔案即可離線瀏覽。
 
-公開網址：https://ningchangggg.github.io/ordersome-brief/
+公開網址：https://ordersome.github.io/
 
-直接開到某一篇：網址後面加 `#ep1`～`#ep5`，例如 https://ningchangggg.github.io/ordersome-brief/#ep3 （粉漿蛋餅篇）。
+直接開到某一篇：網址後面加 `#ep1`～`#ep3`，例如 https://ordersome.github.io/#ep3 （搖搖便當篇）。
 
 - `index.html` — 產出的網頁（勿直接手改，會被 build.sh 覆蓋）
 - `build.sh` / `wrap.py` — 由 iCloud「◼︎來點什麼/_來點什麼創作者主題」資料夾中的成品檔重新產生 index.html

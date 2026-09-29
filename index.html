@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="color-scheme" content="only light">
+<meta name="theme-color" content="#FAF9F5">
 <title>來點什麼 拍攝指南</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,22 +37,9 @@
     --gutter: 18px;
     --maxw: 680px;
     --r: 16px;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --paper: #171512; --card: #211E19; --ink: #F2EEE4; --ink-2: #CBC4B6; --ink-3: #978F80;
-      --rule: #3A342B; --sign: #F7C600; --sign-soft: #3B3214; --tw: #3E3417; --kr: #452B27;
-      --kr-deep: #F0A596; --green: #2A3622; --alert: #FF8B7E; --alert-bg: #3A1F1B;
-      --on-sign: #211E19; --stroke: #0E0D0B;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --paper: #171512; --card: #211E19; --ink: #F2EEE4; --ink-2: #CBC4B6; --ink-3: #978F80;
-    --rule: #3A342B; --sign: #F7C600; --sign-soft: #3B3214; --tw: #3E3417; --kr: #452B27;
-    --kr-deep: #F0A596; --green: #2A3622; --alert: #FF8B7E; --alert-bg: #3A1F1B;
-    --on-sign: #211E19; --stroke: #0E0D0B;
-    color-scheme: dark;
+
+    /* 一律白底（2026-09-29 決定）：不跟手機深色模式切換；only 也擋掉 Chrome 的自動深色化 */
+    color-scheme: only light;
   }
 
   * { box-sizing: border-box; }
